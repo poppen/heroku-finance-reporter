@@ -17,6 +17,7 @@ def send_mail(body, subject = 'finance report')
                :enable_starttls_auto => true}})
 end
 
+desc "Expetion value of SPDR500"
 task "spy" do
   data = YahooFinance.quotes(["SPY", "USDJPY=X"], [:ask], {:raw => false})
   send_mail(data[0].ask * data[1].ask, 'Expection value of SPDR500')
