@@ -3,6 +3,7 @@ require 'pony'
 require 'yahoo_finance'
 
 def send_mail(body, subject = 'finance report')
+  return unless ENV.has_key?('MAIL_TO')
   Pony.mail({:to => ENV['MAIL_TO'],
              :subject => subject,
              :body => body,
