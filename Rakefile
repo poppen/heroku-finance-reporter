@@ -3,7 +3,8 @@ require 'pony'
 require 'yahoo_finance'
 
 def send_mail(body, subject = 'finance report')
-  Pony.mail({:to => ENV['TO_ADDRESS'],
+  return unless ENV.has_key?('MAIL_TO')
+  Pony.mail({:to => ENV['MAIL_TO'],
              :subject => subject,
              :body => body,
              :via => :smtp,
@@ -20,5 +21,7 @@ end
 desc "Expetion value of SPDR500"
 task "spy" do
   data = YahooFinance.quotes(["SPY", "USDJPY=X"], [:ask], {:raw => false})
-  send_mail(data[0].ask * data[1].ask, 'Expection value of SPDR500')
+  quote = (data[0].ask.to_i * data[1].ask.to_f)
+  puts quote
+  send_mail(quote.to_s, 'Expection value of SPDR500')
 end
